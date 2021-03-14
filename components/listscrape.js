@@ -45,7 +45,6 @@ module.exports = async () => {
     await page.goto(`${BASE_PAGE}${i}`, { waitUntil: 'networkidle0' });
     await autoScroll(page);
     const data = await runAndCollectListData(page);
-    console.log(data);
     for (let j = 0; j < data.length; j++) {
       const url = data[j].url;
       const name = data[j].name;

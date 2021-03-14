@@ -41,8 +41,8 @@ const runAndCollectCoinMarketData = async (name, page) => {
     const datetime = Date.now();
     const source = row.find('p[font-weight="semibold"]').html();
     const pairs = row.find('a.dm1bn9-0').html();
-    const price = children.eq(1).find('p[color="text"]').html();
-    const volume = children.eq(4).find('p[color="text"]').html();
+    const price = parseFloat(children.eq(3).html().replace(/[^0-9\.]/g, '')); // Remove ** that is shown as outliers
+    const volume = parseFloat(children.eq(4).find('p[color="text"]').html().replace(/[^0-9\.]/g, '')); // Remove ** that is shown as outliers
     const volumePercent = children.eq(5).find('p[color="text"]').html();
     const confidence = children.eq(7).find('div.confidenceLevel').html();
     const updated = children.eq(8).find('p[color="text"]').html();
