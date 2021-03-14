@@ -5,9 +5,9 @@ const coinscrape = require('./coinscrape');
 const config = require('../config');
 
 // Constants
+const BASE_URL = config.BASE_URL;
 const PAGE_START = config.PAGE_START;
 const NUMBER_OF_PAGES = config.NUMBER_OF_PAGES;
-const BASE_PAGE = 'https://coinmarketcap.com/?page=';
 const HEADLESS = config.HEADLESS;
 
 const runAndCollectListData = async page => {
@@ -16,19 +16,15 @@ const runAndCollectListData = async page => {
   const tbody = $('tbody');
   const rows = tbody.children('tr');
   const data = [];
-  console.log('Starting data collection...')
+  // console.log('Starting data collection...')
 
   rows.each(function(i, el) {
     const row = $(this);
+    const children = row.children();
     const rank = row.find('p[color="text2"]').html();
     const name = row.find('p[font-weight="semibold"]').html();
     const symbol = row.find('.coin-item-symbol').html();
-    // const marketCap = row.eq(6).find('p[color="text"]').html();
-    let url = '';
-    if(!!name) {
-      const standardizedCoin = name.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase();
-      url = `https://coinmarketcap.com/currencies/${standardizedCoin}/markets/`;
-    }
+    const url = `${BASE_URL}${children.eq(2).find('a.cmc-link').attr('href')}markets/`;
 
     if(!!rank) {
       data[i] = {rank, name, symbol, url};
@@ -42,9 +38,10 @@ module.exports = async () => {
   const browser = await puppeteer.launch({ headless: HEADLESS });
   const page = await browser.newPage();
   for(let i = PAGE_START; i < PAGE_START + NUMBER_OF_PAGES; i++) {
-    await page.goto(`${BASE_PAGE}${i}`, { waitUntil: 'networkidle0' });
+    await page.goto(`${BASE_URL}/?page=${i}`, { waitUntil: 'networkidle0' });
     await autoScroll(page);
     const data = await runAndCollectListData(page);
+    console.log(data);
     for (let j = 0; j < data.length; j++) {
       const url = data[j].url;
       const name = data[j].name;

@@ -21,7 +21,7 @@ const loadMoreRecursively = async page => {
     await autoScroll(page);
     await loadMoreRecursively();
   }
-  console.log('Finished clicking load more buttons.')
+  // console.log('Finished clicking load more buttons.')
 }
 
 const runAndCollectCoinMarketData = async (name, page) => {
@@ -32,7 +32,7 @@ const runAndCollectCoinMarketData = async (name, page) => {
   const rows = tbody.children('tr');
   
   // Begin collecting data
-  console.log('Starting data collection...')
+  // console.log('Starting data collection...')
   const data = [];
   rows.each(function(i, el) {
     const row = $(this);
@@ -41,11 +41,12 @@ const runAndCollectCoinMarketData = async (name, page) => {
     const datetime = Date.now();
     const source = row.find('p[font-weight="semibold"]').html();
     const pairs = row.find('a.dm1bn9-0').html();
-    const price = parseFloat(children.eq(3).html().replace(/[^0-9\.]/g, '')); // Remove ** that is shown as outliers
+    const price = parseFloat(children.eq(3).html().replace(/[^0-9\.]/g, '')) ; // Remove ** that is shown as outliers
     const volume = parseFloat(children.eq(4).find('p[color="text"]').html().replace(/[^0-9\.]/g, '')); // Remove ** that is shown as outliers
     const volumePercent = children.eq(5).find('p[color="text"]').html();
     const confidence = children.eq(7).find('div.confidenceLevel').html();
     const updated = children.eq(8).find('p[color="text"]').html();
+
     data[i] = {id, name, datetime, source, pairs, price, volume, volumePercent, confidence, updated};
   });
 
