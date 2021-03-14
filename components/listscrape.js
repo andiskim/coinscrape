@@ -38,13 +38,17 @@ module.exports = async () => {
   const browser = await puppeteer.launch({ headless: HEADLESS });
   const page = await browser.newPage();
   for(let i = PAGE_START; i < PAGE_START + NUMBER_OF_PAGES; i++) {
+    console.log(`---------- Gathering Coins from Page ${i} -----------`)
     await page.goto(`${BASE_URL}/?page=${i}`, { waitUntil: 'networkidle0' });
     await autoScroll(page);
     const data = await runAndCollectListData(page);
     for (let j = 0; j < data.length; j++) {
-      const url = data[j].url;
+      const rank = data[j].rank;
       const name = data[j].name;
-      await coinscrape(name, url);
+      const symbol = data[j].symbol;
+      const url = data[j].url;
+      
+      await coinscrape(rank, name, symbol, url);
     }
   }
 

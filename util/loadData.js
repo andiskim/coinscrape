@@ -3,11 +3,14 @@ const config = require('../config');
 module.exports = async data => {
   if(data.length > 0) {
     const name = data[0].name;
-    console.log(`Analyzing ${name}`)
+    const symbol = data[0].symbol;
+    const rank = data[0].rank;
+
+    console.log(`Analyzing ${name} (Rank ${rank})`)
     // Analyze Data
     const VOLUME_THRESHOLD = config.VOLUME_THRESHOLD;
     const PERCENT_THRESHOLD = config.PERCENT_THRESHOLD;
-    const filterVolumeThreshold = data.filter(el => el.volume > VOLUME_THRESHOLD);
+    const filterVolumeThreshold = data.filter(el => !!el.price && !!el.volume && el.volume > VOLUME_THRESHOLD);
     const sorted = filterVolumeThreshold.slice().sort((a,b) => {
       return a.price - b.price
     });
@@ -22,14 +25,16 @@ module.exports = async data => {
     const highestPriceVolume = sorted[highestIndex].volume;
     const lowestPriceVolume = sorted[lowestIndex].volume;
 
-    const percentDifference = (highestPrice / lowestPrice) - 1;
+    const highestPricePair = sorted[highestIndex].pairs;
+    const lowestPricePair = sorted[lowestIndex].pairs;
+
+    const percentDifference = ((highestPrice / lowestPrice) - 1)*100;
 
     if (percentDifference > PERCENT_THRESHOLD) {
-      console.log(`-------${name}---------`)
-      console.log(filterVolumeThreshold);
-      console.log(`Highest: ${highestPrice} - Volume: ${highestPriceVolume}`);
-      console.log(`Lowest: ${lowestPrice} - Volume: ${lowestPriceVolume}`);
-      console.log(`---------------------------------`)
+      console.log(`-------${name} (${symbol})---------`)
+      console.log(`Highest: ${highestPrice} - Volume: ${highestPriceVolume} - Pair: ${highestPricePair}`);
+      console.log(`Lowest: ${lowestPrice} - Volume: ${lowestPriceVolume} - Pair: ${lowestPricePair}`);
+      console.log(`Percent Difference: ${percentDifference}%`);
     }
   }
 }
