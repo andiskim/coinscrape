@@ -1,6 +1,6 @@
 module.exports = {
   BASE_URL: 'https://coinmarketcap.com',
-  HEADLESS: false,
+  HEADLESS: true,
   PAGE_START: 2,
   NUMBER_OF_PAGES: 2,
   VOLUME_THRESHOLD: 500000,
