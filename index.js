@@ -20,10 +20,11 @@ async function autoScroll(page) {
   });
 }
 
-const execute = async (browser, pages) => {
+const execute = async (browser, basePage) => {
+  const numberOfPages = 10;
   const page = await browser.newPage();
-  for(let i = 0; i < pages.length; i++) {
-    await page.goto(pages[i], {
+  for(let i = 1; i < numberOfPages + 1; i++) {
+    await page.goto(`${basePage}${i}`, {
       waitUntil: 'networkidle0',
     });
   
@@ -67,8 +68,7 @@ const execute = async (browser, pages) => {
 
 (async () => {
   const browser = await puppeteer.launch({ headless: false });
-  const pages = ['https://coinmarketcap.com/?page=1', 'https://coinmarketcap.com/?page=2'];
-  await execute(browser, pages);
-
+  const basePage = 'https://coinmarketcap.com/?page=';
+  await execute(browser, basePage);
   await browser.close();
 })();
