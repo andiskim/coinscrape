@@ -6,7 +6,7 @@ const config = require('../config');
 
 // Constants
 const LOAD_MORE_TAG = 'button.jBBqnu';
-const COIN_NAME_TAG = '.bQqdJy h1___3QSYG';
+// const COIN_NAME_TAG = '.bQqdJy h1___3QSYG';
 const HEADLESS = config.HEADLESS;
 
 const loadMoreRecursively = async page => {

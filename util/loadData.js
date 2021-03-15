@@ -6,11 +6,11 @@ module.exports = async data => {
       const name = data[0].name;
       const symbol = data[0].symbol;
       const rank = data[0].rank;
-      console.log(`Analyzing ${name} (Rank ${rank})`)
+      console.log(`Analyzing Rank ${rank} - ${name} (${symbol})`)
       // Analyze Data
       const VOLUME_THRESHOLD = config.VOLUME_THRESHOLD;
       const PERCENT_THRESHOLD = config.PERCENT_THRESHOLD;
-      const filterVolumeThreshold = data.filter(el => !!el.price && !!el.volume && el.volume > VOLUME_THRESHOLD);
+      const filterVolumeThreshold = data.filter(el => !!el.price && !!el.volume && el.volume > VOLUME_THRESHOLD && el.updated === 'Recently' && el.confidence === 'High');
       // Make sure filtered data has data points
       if (filterVolumeThreshold.length > 0) {
         const sorted = filterVolumeThreshold.slice().sort((a,b) => {

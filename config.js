@@ -1,8 +1,8 @@
 module.exports = {
   BASE_URL: 'https://coinmarketcap.com',
-  HEADLESS: false,
-  PAGE_START: 10,
-  NUMBER_OF_PAGES: 2,
-  VOLUME_THRESHOLD: 500000,
-  PERCENT_THRESHOLD: 40
+  HEADLESS: true,
+  PAGE_START: 5,
+  NUMBER_OF_PAGES: 5,
+  VOLUME_THRESHOLD: 300000,
+  PERCENT_THRESHOLD: 15
 }
